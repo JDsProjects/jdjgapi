@@ -1,0 +1,10 @@
+{
+    "endpoints": [
+        "objection",
+        "advice",
+        "slur_response",
+        "random_message",
+        "insult",
+        "compliment"
+    ]
+}

@@ -1,7 +1,7 @@
 import http.server
 import socketserver
 import json
-import math
+import random
 
 port = 3000
 
@@ -11,20 +11,24 @@ class handler(http.server.BaseHTTPRequestHandler):
         self.send_header('Content-Type', 'text/html; charset=utf-8')
         self.end_headers()
         if self.path == '/':
-            file = open('static/index.html','rb')
-            data = file.read()
-            file.close()
+            with open('static/index.html', 'rb') as file:
+                data = file.read()
+        elif self.path == '/api':
+            with open('static/endpoints.json', 'rb') as file:
+                data = file.read()
         elif self.path == '/api/objection':
-            file = open('static/data.json','r')
-            data_json = file.read()
-            file.close()
-            data_dict = json.loads(data_json)
-            data_array = data_dict["objection"]
-            data = data_array[Math.floor(Math.random()*items.length)]
-        else:
-            file = open('static/404.html','rb')
-            data = file.read()
-            file.close()
+            with open('static/data.json', 'r') as file:
+                data_json = json.loads(file.reaohd())
+            data_array = data_json["objection"]
+            data = str.encode(random.choice(data_array))
+        elif self.path == '/api/advice':
+            with open('static/data.json', 'r') as file:
+                data_json = json.loads(file.read())
+            data_array = data_json["advice"]
+            data = str.encode(random.choice(data_array))
+        else: 
+            with open('static/404.html', 'rb') as file:
+                data = file.read()
 
         self.wfile.write(data)
 
