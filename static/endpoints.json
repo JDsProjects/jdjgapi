@@ -5,6 +5,7 @@
         "slur_response",
         "random_message",
         "insult",
-        "compliment"
+        "compliment",
+        "opinion_truth"
     ]
 }
