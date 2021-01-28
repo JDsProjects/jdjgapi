@@ -2,10 +2,10 @@
     "endpoints": [
         "objection",
         "advice",
-        "slur_response",
-        "random_message",
+        "noslur",
+        "randomMessage",
         "insult",
         "compliment",
-        "opinion_truth"
+        "opinional"
     ]
 }
