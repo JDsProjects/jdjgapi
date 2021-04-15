@@ -36,6 +36,7 @@ def handleEndpoint(endpoint):
     data = json.dumps(errorDict), 404, {'content-type':'application/json'}
   return data
 
+# hi
 @app.errorhandler(404)
 def handle404(error):
     with open('404.html', 'r') as file:
