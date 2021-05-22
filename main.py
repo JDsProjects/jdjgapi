@@ -1,6 +1,5 @@
 from flask import Flask
-import json
-import random
+import json, random
 
 app = Flask(__name__)
 
