@@ -1,23 +1,23 @@
-from flask import Flask
+from quart import Quart
 import json, random
 
-app = Flask(__name__)
+app = Quart(__name__)
 
 @app.route('/')
-def handleRoot():
+async def handleRoot():
     with open('index.html', 'r') as file:
         data = file.read(), 200, {'content-type':'text/html'}
     return data
 
 @app.route('/api/')
-def handleApi():
+async def handleApi():
     with open('api.html', 'r') as file:
         data = file.read(), 200, {'content-type':'text/html'}
     return data
 
 
 @app.route('/api/<endpoint>')
-def handleEndpoint(endpoint):
+async def handleEndpoint(endpoint):
   with open('data.json', 'r') as file:
     dataJson = json.loads(file.read())
   try:
@@ -37,9 +37,9 @@ def handleEndpoint(endpoint):
 
 # hi
 @app.errorhandler(404)
-def handle404(error):
+async def handle404(error):
     with open('404.html', 'r') as file:
         data = file.read()
     return data, 404, {'content-type':'text/html'}
 
-app.run(host='0.0.0.0', port=3000)
+app.run(host = '0.0.0.0', port=3000)
