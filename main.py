@@ -24,7 +24,10 @@ async def root():
 
 @app.get("/api/")
 async def api():
-    return {"endpoints": "wip"}
+
+    url_list = [route.name for route in app.routes if route.path.startswith("/api")]
+
+    return {"endpoints": url_list}
 
 
 @app.get("/api/objection/")
