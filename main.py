@@ -3,6 +3,7 @@ import json
 import random
 from io import BytesIO
 
+import gtts
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
