@@ -7,7 +7,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from gtts import gTTS
 
-data = json.loads(file.read())
+data = json.loads(file.read("jdjg_data.json"))
 
 app = FastAPI()
 
