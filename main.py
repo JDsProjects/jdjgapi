@@ -29,6 +29,7 @@ async def api():
 
     return {"endpoints": url_list}
 
+# maybe I should make just remove /api for the stuff below???
 
 @app.get("/api/objection/")
 async def objection():
