@@ -98,4 +98,4 @@ async def tts(text: str, language: str):
 # raise HTTPException(status_code=404, detail="Item not found")
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=5000, log_level="info")
+    uvicorn.run("main:app", port=3000, log_level="debug")
