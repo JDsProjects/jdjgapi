@@ -26,7 +26,7 @@ async def api():
     return {"endpoints": "wip"}
 
 
-@app.get("/api/objection")
+@app.get("/api/objection/")
 async def objection():
     text = data["objection"]
 
@@ -37,7 +37,7 @@ async def objection():
 
 @app.get("/api/advice/")
 async def advice():
-    text = data["objection"]
+    text = data["advice"]
 
     return {"text": random.choice(text)}
 
@@ -77,7 +77,7 @@ async def opinional():
     return {"url": random.choice(text)}
 
 
-@app.get("/api/tts")
+@app.get("/api/tts/")
 async def tts(text: str, language: str):
     # calls tts
 
