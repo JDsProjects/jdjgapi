@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+
+import asyncio
 import random
 import json
 
@@ -58,7 +60,15 @@ async def opinional():
 
     return {"url" : random.choice(text)}
 
+@app.get("/api/tts")
+async def tts(text : str, language : str):
+    # calls tts
+
+    return {"audio" : "tts"}
+
 # handle 404 errors.
+# return HTTPException
+# raise HTTPException(status_code=404, detail="Item not found")
 
 
 app.run(host = '0.0.0.0', port=3000)
