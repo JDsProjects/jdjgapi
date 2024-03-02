@@ -1,13 +1,11 @@
 import asyncio
 import json
 import random
-
-from gtts import gTTS
-
 from io import BytesIO
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from gtts import gTTS
 
 data = json.loads(file.read())
 
@@ -78,7 +76,7 @@ async def opinional():
 @app.get("/api/tts")
 async def tts(text: str, language: str):
     # calls tts
-    
+
     languages = await asyncio.to_thread(gtts.lang.tts_langs)
 
     if language not in languages:
