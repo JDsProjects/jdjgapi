@@ -2,7 +2,12 @@ import asyncio
 import json
 import random
 
+from gtts import gTTS
+
+from io import BytesIO
+
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 
 data = json.loads(file.read())
 
@@ -73,8 +78,17 @@ async def opinional():
 @app.get("/api/tts")
 async def tts(text: str, language: str):
     # calls tts
+    
+    languages = await asyncio.to_thread(gtts.lang.tts_langs)
 
-    return {"audio": "tts"}
+    if language not in languages:
+        raise HTTPException(status_code=404, detail="language not found")
+
+    mp3_fp = BytesIO()
+    data = await asyncio.to_thread(gTTS, text)
+    data_write = asyncio.to_thread(tts.write_to_fp, mp3_fp)
+
+    return FileResponse(data, media_type="audio/mpeg", filename="audio.mp3")
 
 
 # handle 404 errors.
