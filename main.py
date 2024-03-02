@@ -1,22 +1,22 @@
-from quart import Quart
+from fastapi import FastAPI
 import json, random
 
-app = Quart(__name__)
+app = FastAPI()
 
-@app.route('/')
+@app.get('/')
 async def handleRoot():
     with open('index.html', 'r') as file:
         data = file.read(), 200, {'content-type':'text/html'}
     return data
 
-@app.route('/api/')
+@app.get('/api/')
 async def handleApi():
     with open('api.html', 'r') as file:
         data = file.read(), 200, {'content-type':'text/html'}
     return data
 
 
-@app.route('/api/<endpoint>')
+@app.get('/api/<endpoint>')
 async def handleEndpoint(endpoint):
   with open('data.json', 'r') as file:
     dataJson = json.loads(file.read())
