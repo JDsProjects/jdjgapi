@@ -3,11 +3,15 @@ import json
 import random
 from io import BytesIO
 
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from gtts import gTTS
 
-data = json.loads("jdjg_data.json")
+with open("jdjg_data.json", "r") as f:
+    file = f.read()
+
+data = json.loads(file)
 
 app = FastAPI()
 
@@ -93,5 +97,5 @@ async def tts(text: str, language: str):
 # return HTTPException
 # raise HTTPException(status_code=404, detail="Item not found")
 
-
-app.run(host="0.0.0.0", port=3000)
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=5000, log_level="info")
