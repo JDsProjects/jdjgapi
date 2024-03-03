@@ -17,7 +17,7 @@ def get_data():
         file = f.read()
 
     data = json.loads(file)
-    yield data
+    return data
 
 
 @app.get("/")
