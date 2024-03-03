@@ -4,6 +4,7 @@ import random
 import typing
 from io import BytesIO
 
+import asqlite
 import gtts
 import uvicorn
 from fastapi import FastAPI, HTTPException, Depends, Request
@@ -12,15 +13,18 @@ from gtts import gTTS
 
 app = FastAPI()
 
-def get_data(request: Request):
+async def get_data(table : str):
 
-    request.url.path
+    db = await asqlite.connect("bot.db")
+    main_cursor = await db.cursor()
 
-    with open("jdjg_data.json", "r") as f:
-        file = f.read()
+    result = await main_cursor.execute(f"SELECT FROM IMPORT {table}")
+    
+    # ew I hate that they suggested this.
 
-    data = json.loads(file)
-    return data
+    await db.close()
+
+    return [x[0] for x in await result.fetchall()
 
 
 @app.get("/")
