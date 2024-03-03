@@ -1,12 +1,13 @@
 import asyncio
 import json
 import random
+import typing
 from io import BytesIO
 
 import gtts
 import uvicorn
-from fastapi import FastAPI, HTTPException, JSONResponse
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse, Response
 from gtts import gTTS
 
 with open("jdjg_data.json", "r") as f:
@@ -83,7 +84,7 @@ async def opinional():
 
 
 @app.get("/api/tts/")
-async def tts(text: str, language: str):
+async def tts(text: typing.Union[str, None] = None, language: typing.Union[str, None] = None):
     # calls tts
 
     languages = await asyncio.to_thread(gtts.lang.tts_langs)
@@ -92,10 +93,15 @@ async def tts(text: str, language: str):
         raise HTTPException(status_code=404, detail="language not found")
 
     mp3_fp = BytesIO()
-    data = await asyncio.to_thread(gTTS, text)
-    data_write = asyncio.to_thread(tts.write_to_fp, mp3_fp)
+    data = await asyncio.to_thread(gTTS, text, "com", language)
 
-    return FileResponse(data, media_type="audio/mpeg", filename="audio.mp3")
+    try:
+        await asyncio.to_thread(data.write_to_fp, mp3_fp)
+
+    except Exception as e:
+        return JSONResponse(content={"error": "language not around"})
+
+    return Response(mp3_fp.getvalue(), media_type="audio/mpeg")
 
 
 # handle 404 errors.
