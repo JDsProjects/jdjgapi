@@ -25,7 +25,7 @@ async def root():
     return JSONResponse(content={"message": "welcome to jdjg api"})
 
 
-@app.get("/api/")
+@app.get("/api")
 async def api():
 
     url_list = [route.name for route in app.routes if route.path.startswith("/api")]
@@ -34,7 +34,7 @@ async def api():
 
 # maybe I should make just remove /api for the stuff below???
 
-@app.get("/api/objection/")
+@app.get("/api/objection")
 async def objection(data: dict[str, typing.Any] = Depends(get_data)) :
     text = data["objection"]
 
@@ -43,49 +43,49 @@ async def objection(data: dict[str, typing.Any] = Depends(get_data)) :
     # not sure how to return it
 
 
-@app.get("/api/advice/")
+@app.get("/api/advice")
 async def advice(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["advice"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
-@app.get("/api/noslur/")
+@app.get("/api/noslur")
 async def noslur(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["noslur"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
-@app.get("/api/random-message/")
+@app.get("/api/random-message")
 async def random_message(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["randomMessage"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
-@app.get("/api/insult/")
+@app.get("/api/insult")
 async def insult(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["insult"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
-@app.get("/api/compliment/")
+@app.get("/api/compliment")
 async def compliment(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["compliment"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
-@app.get("/api/opinional/")
+@app.get("/api/opinional")
 async def opinional(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["opinional"]
 
     return JSONResponse(content={"url": random.choice(text)})
 
 
-@app.get("/api/tts/")
+@app.get("/api/tts")
 async def tts(text: typing.Union[str, None] = None, language: typing.Union[str, None] = None):
     # calls tts
 
