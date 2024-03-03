@@ -51,7 +51,7 @@ async def objection(data: dict[str, typing.Any] = Depends(get_data("objection"))
 
 
 @app.get("/api/advice")
-async def advice(data: dict[str, typing.Any] = Depends(get_data)):
+async def advice(data: dict[str, typing.Any] = Depends(get_data("advice"))):
     text = data["advice"]
 
     return JSONResponse(content={"text": random.choice(text)})
