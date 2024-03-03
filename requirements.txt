@@ -1,1 +1,3 @@
 fastapi
+gTTS
+uvicorn

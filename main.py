@@ -1,46 +1,112 @@
-from fastapi import FastAPI
-import json, random
+import asyncio
+import json
+import random
+import typing
+from io import BytesIO
+
+import gtts
+import uvicorn
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import JSONResponse, Response
+from gtts import gTTS
+
+with open("jdjg_data.json", "r") as f:
+    file = f.read()
+
+data = json.loads(file)
 
 app = FastAPI()
 
-@app.get('/')
-async def handleRoot():
-    with open('index.html', 'r') as file:
-        data = file.read(), 200, {'content-type':'text/html'}
-    return data
 
-@app.get('/api/')
-async def handleApi():
-    with open('api.html', 'r') as file:
-        data = file.read(), 200, {'content-type':'text/html'}
-    return data
+@app.get("/")
+async def root():
+    return JSONResponse(content={"message": "welcome to jdjg api"})
 
 
-@app.get('/api/<endpoint>')
-async def handleEndpoint(endpoint):
-  with open('data.json', 'r') as file:
-    dataJson = json.loads(file.read())
-  try:
-      dataArray = dataJson[endpoint]
-      tempData = str(random.choice(dataArray))
-      if endpoint == "objection" or endpoint == "opinional":
-        tempDict = {"url": tempData}
-      else:
-        tempDict = {"text": tempData}
-      data = json.dumps(tempDict), 200, {'content-type':'application/json'}
-        
-  except KeyError as e:
-    print(e)
-    errorDict={"error":f"{endpoint} isn't a valid endpoint"}
-    data = json.dumps(errorDict), 404, {'content-type':'application/json'}
-  return data
+@app.get("/api/")
+async def api():
 
-# hi
-@app.errorhandler(404)
-async def handle404(error):
-    with open('404.html', 'r') as file:
-        data = file.read()
-    return data, 404, {'content-type':'text/html'}
+    url_list = [route.name for route in app.routes if route.path.startswith("/api")]
 
-app.run(host = '0.0.0.0', port=3000)
-#check out the misc thing in Senarc, this will not be archived for now, but please don't attempt to make a pull request, Thanks.
+    return JSONResponse(content={"endpoints": url_list})
+
+# maybe I should make just remove /api for the stuff below???
+
+@app.get("/api/objection/")
+async def objection():
+    text = data["objection"]
+
+    return JSONResponse(content={"url": random.choice(text)})
+
+    # not sure how to return it
+
+
+@app.get("/api/advice/")
+async def advice():
+    text = data["advice"]
+
+    return JSONResponse(content={"text": random.choice(text)})
+
+
+@app.get("/api/noslur/")
+async def noslur():
+    text = data["noslur"]
+
+    return JSONResponse(content={"text": random.choice(text)})
+
+
+@app.get("/api/random-message/")
+async def random_message():
+    text = data["randomMessage"]
+
+    return JSONResponse(content={"text": random.choice(text)})
+
+
+@app.get("/api/insult/")
+async def insult():
+    text = data["insult"]
+
+    return JSONResponse(content={"text": random.choice(text)})
+
+
+@app.get("/api/compliment/")
+async def compliment():
+    text = data["compliment"]
+
+    return JSONResponse(content={"text": random.choice(text)})
+
+
+@app.get("/api/opinional/")
+async def opinional():
+    text = data["opinional"]
+
+    return JSONResponse(content={"url": random.choice(text)})
+
+
+@app.get("/api/tts/")
+async def tts(text: typing.Union[str, None] = None, language: typing.Union[str, None] = None):
+    # calls tts
+
+    languages = await asyncio.to_thread(gtts.lang.tts_langs)
+
+    if language not in languages:
+        raise HTTPException(status_code=404, detail="language not found")
+
+    mp3_fp = BytesIO()
+    data = await asyncio.to_thread(gTTS, text, "com", language)
+
+    try:
+        await asyncio.to_thread(data.write_to_fp, mp3_fp)
+
+    except Exception as e:
+        return JSONResponse(content={"error": "language not around"})
+
+    return Response(mp3_fp.getvalue(), media_type="audio/mpeg")
+
+
+# handle 404 errors.
+# return HTTPException
+# raise HTTPException(status_code=404, detail="Item not found")
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", port=3000, log_level="debug")
