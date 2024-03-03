@@ -19,12 +19,12 @@ async def get_data(table : str):
     main_cursor = await db.cursor()
 
     result = await main_cursor.execute(f"SELECT FROM IMPORT {table}")
-    
+
     # ew I hate that they suggested this.
 
     await db.close()
 
-    return [x[0] for x in await result.fetchall()
+    return [x[0] for x in await result.fetchall()]
 
 
 @app.get("/")
