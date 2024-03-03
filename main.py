@@ -6,16 +6,18 @@ from io import BytesIO
 
 import gtts
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import JSONResponse, Response
 from gtts import gTTS
 
-with open("jdjg_data.json", "r") as f:
-    file = f.read()
-
-data = json.loads(file)
-
 app = FastAPI()
+
+def get_data():
+    with open("jdjg_data.json", "r") as f:
+        file = f.read()
+
+    data = json.loads(file)
+    yield data
 
 
 @app.get("/")
@@ -33,7 +35,7 @@ async def api():
 # maybe I should make just remove /api for the stuff below???
 
 @app.get("/api/objection/")
-async def objection():
+async def objection(data: dict[str, typing.Any] = Depends(get_data)) :
     text = data["objection"]
 
     return JSONResponse(content={"url": random.choice(text)})
@@ -42,42 +44,42 @@ async def objection():
 
 
 @app.get("/api/advice/")
-async def advice():
+async def advice(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["advice"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/noslur/")
-async def noslur():
+async def noslur(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["noslur"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/random-message/")
-async def random_message():
+async def random_message(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["randomMessage"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/insult/")
-async def insult():
+async def insult(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["insult"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/compliment/")
-async def compliment():
+async def compliment(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["compliment"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/opinional/")
-async def opinional():
+async def opinional(data: dict[str, typing.Any] = Depends(get_data)):
     text = data["opinional"]
 
     return JSONResponse(content={"url": random.choice(text)})
