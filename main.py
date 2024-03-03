@@ -7,13 +7,14 @@ from io import BytesIO
 import asqlite
 import gtts
 import uvicorn
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, Response
 from gtts import gTTS
 
 app = FastAPI()
 
-async def get_data(response : Response):
+
+async def get_data(response: Response):
 
     db = await asqlite.connect("bot.db")
     main_cursor = await db.cursor()
@@ -26,9 +27,11 @@ async def get_data(response : Response):
 
     return [x[0] for x in await result.fetchall()]
 
+
 def get_particular_data(table):
     def wrapper(data: dict[str, Any] = Depends(get_data)):
         return data[table]
+
     return wrapper
 
 
@@ -44,10 +47,12 @@ async def api():
 
     return JSONResponse(content={"endpoints": url_list})
 
+
 # maybe I should make just remove /api for the stuff below???
 
+
 @app.get("/api/objection")
-async def objection(data: dict[str, typing.Any] = Depends(get_particular_data("objection"))) :
+async def objection(data: dict[str, typing.Any] = Depends(get_particular_data("objection"))):
     text = data["objection"]
 
     return JSONResponse(content={"url": random.choice(text)})
