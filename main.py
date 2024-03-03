@@ -18,7 +18,7 @@ async def get_data(table : str):
     db = await asqlite.connect("bot.db")
     main_cursor = await db.cursor()
 
-    result = await main_cursor.execute(f"SELECT FROM IMPORT {table}")
+    result = await main_cursor.execute(f"SELECT * FROM IMPORT {table}")
 
     # ew I hate that they suggested this.
 
