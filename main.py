@@ -5,7 +5,7 @@ from io import BytesIO
 
 import gtts
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, JSONResponse
 from fastapi.responses import FileResponse
 from gtts import gTTS
 
@@ -19,7 +19,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "welcome to jdjg api"}
+    return JSONResponse(content={"message": "welcome to jdjg api"})
 
 
 @app.get("/api/")
@@ -27,7 +27,7 @@ async def api():
 
     url_list = [route.name for route in app.routes if route.path.startswith("/api")]
 
-    return {"endpoints": url_list}
+    return JSONResponse(content={"endpoints": url_list})
 
 # maybe I should make just remove /api for the stuff below???
 
@@ -35,7 +35,7 @@ async def api():
 async def objection():
     text = data["objection"]
 
-    return {"url": random.choice(text)}
+    return JSONResponse(content={"url": random.choice(text)})
 
     # not sure how to return it
 
@@ -44,42 +44,42 @@ async def objection():
 async def advice():
     text = data["advice"]
 
-    return {"text": random.choice(text)}
+    return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/noslur/")
 async def noslur():
     text = data["noslur"]
 
-    {"text": random.choice(text)}
+    return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/random-message/")
 async def random_message():
     text = data["randomMessage"]
 
-    return {"text": random.choice(text)}
+    return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/insult/")
 async def insult():
     text = data["insult"]
 
-    return {"text": random.choice(text)}
+    return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/compliment/")
 async def compliment():
     text = data["compliment"]
 
-    return {"text": random.choice(text)}
+    return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/opinional/")
 async def opinional():
     text = data["opinional"]
 
-    return {"url": random.choice(text)}
+    return JSONResponse(content={"url": random.choice(text)})
 
 
 @app.get("/api/tts/")
