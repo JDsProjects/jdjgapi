@@ -13,7 +13,7 @@ from gtts import gTTS
 
 app = FastAPI()
 
-async def get_data(table : str):
+async def get_data(response : Response):
 
     db = await asqlite.connect("bot.db")
     main_cursor = await db.cursor()
@@ -25,6 +25,11 @@ async def get_data(table : str):
     await db.close()
 
     return [x[0] for x in await result.fetchall()]
+
+def get_particular_data(table):
+    def wrapper(data: dict[str, Any] = Depends(get_data)):
+        return data[table]
+    return wrapper
 
 
 @app.get("/")
@@ -42,7 +47,7 @@ async def api():
 # maybe I should make just remove /api for the stuff below???
 
 @app.get("/api/objection")
-async def objection(data: dict[str, typing.Any] = Depends(get_data("objection"))) :
+async def objection(data: dict[str, typing.Any] = Depends(get_particular_data("objection"))) :
     text = data["objection"]
 
     return JSONResponse(content={"url": random.choice(text)})
@@ -51,42 +56,42 @@ async def objection(data: dict[str, typing.Any] = Depends(get_data("objection"))
 
 
 @app.get("/api/advice")
-async def advice(data: dict[str, typing.Any] = Depends(get_data("advice"))):
+async def advice(data: dict[str, typing.Any] = Depends(get_particular_data("advice"))):
     text = data["advice"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/noslur")
-async def noslur(data: dict[str, typing.Any] = Depends(get_data("no_slur"))):
+async def noslur(data: dict[str, typing.Any] = Depends(get_particular_data("no_slur"))):
     text = data["noslur"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/random-message")
-async def random_message(data: dict[str, typing.Any] = Depends(get_data("random_message"))):
+async def random_message(data: dict[str, typing.Any] = Depends(get_particular_data("random_message"))):
     text = data["randomMessage"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/insult")
-async def insult(data: dict[str, typing.Any] = Depends(get_data("insult"))):
+async def insult(data: dict[str, typing.Any] = Depends(get_particular_data("insult"))):
     text = data["insult"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/compliment")
-async def compliment(data: dict[str, typing.Any] = Depends(get_data("compliment"))):
+async def compliment(data: dict[str, typing.Any] = Depends(get_particular_data("compliment"))):
     text = data["compliment"]
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/opinional")
-async def opinional(data: dict[str, typing.Any] = Depends(get_data("opinional"))):
+async def opinional(data: dict[str, typing.Any] = Depends(get_particular_data("opinional"))):
     text = data["opinional"]
 
     return JSONResponse(content={"url": random.choice(text)})
