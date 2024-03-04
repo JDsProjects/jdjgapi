@@ -11,22 +11,27 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, Response
 from gtts import gTTS
 
+
 @typing.asynccontextmanager
 async def lifespan(app: FastAPI):
     async with asqlite.create_pool("bot.db") as app.pool:
         yield
 
+
 app = FastAPI(lifespan=lifespan)
+
 
 async def get_conn(request: Request):
     async with request.app.pool.acquire() as conn:
         yield conn
 
+
 def get_particular_data(table):
-    async def wrapper(conn = Depends(get_conn)):
+    async def wrapper(conn=Depends(get_conn)):
         async with conn.cursor() as cursor:
             result = await cursor.execute(f"SELECT * FROM IMPORT {table}")
             return [x[0] for x in await result.fetchall()]
+
     return wrapper
 
 
