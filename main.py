@@ -54,7 +54,7 @@ async def api():
 
 @app.get("/api/objection")
 async def objection(data: dict[str, typing.Any] = Depends(get_particular_data("objection"))):
-    text = data["objection"]
+    text = data
 
     return JSONResponse(content={"url": random.choice(text)})
 
@@ -63,42 +63,42 @@ async def objection(data: dict[str, typing.Any] = Depends(get_particular_data("o
 
 @app.get("/api/advice")
 async def advice(data: dict[str, typing.Any] = Depends(get_particular_data("advice"))):
-    text = data["advice"]
+    text = data
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/noslur")
 async def noslur(data: dict[str, typing.Any] = Depends(get_particular_data("no_slur"))):
-    text = data["noslur"]
+    text = data
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/random-message")
 async def random_message(data: dict[str, typing.Any] = Depends(get_particular_data("random_message"))):
-    text = data["randomMessage"]
+    text = data
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/insult")
 async def insult(data: dict[str, typing.Any] = Depends(get_particular_data("insult"))):
-    text = data["insult"]
+    text = data
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/compliment")
 async def compliment(data: dict[str, typing.Any] = Depends(get_particular_data("compliment"))):
-    text = data["compliment"]
+    text = data
 
     return JSONResponse(content={"text": random.choice(text)})
 
 
 @app.get("/api/opinional")
 async def opinional(data: dict[str, typing.Any] = Depends(get_particular_data("opinional"))):
-    text = data["opinional"]
+    text = data
 
     return JSONResponse(content={"url": random.choice(text)})
 
