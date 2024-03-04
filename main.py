@@ -129,4 +129,4 @@ async def tts(text: typing.Union[str, None] = None, language: typing.Union[str, 
 # raise HTTPException(status_code=404, detail="Item not found")
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=3000, log_level="debug")
+    uvicorn.run("main:app", port=2343, log_level="debug")
