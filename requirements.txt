@@ -1,3 +1,4 @@
 fastapi
 gTTS
 uvicorn
+git+https://github.com/Rapptz/asqlite
