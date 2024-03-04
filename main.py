@@ -13,7 +13,7 @@ from fastapi.responses import JSONResponse, Response
 from gtts import gTTS
 
 
-@typing.asynccontextmanager
+@asynccontextmanager
 async def lifespan(app: FastAPI):
     async with asqlite.create_pool("bot.db") as app.pool:
         yield
