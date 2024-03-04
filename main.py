@@ -15,7 +15,7 @@ from gtts import gTTS
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    async with asqlite.create_pool("bot.db") as app.pool:
+    async with asqlite.create_pool("jdjg_data.db") as app.pool:
         yield
 
 
@@ -30,7 +30,7 @@ async def get_conn(request: Request):
 def get_particular_data(table):
     async def wrapper(conn=Depends(get_conn)):
         async with conn.cursor() as cursor:
-            result = await cursor.execute(f"SELECT * FROM '{table}'")
+            result = await cursor.execute(f"SELECT * FROM {table}")
             return [x[0] for x in await result.fetchall()]
 
     return wrapper
