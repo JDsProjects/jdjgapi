@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "jdjgapi"
+version = "0.1.0"
+description = ""
+authors = ["JDBot <jdjgbot@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">3.11"
+fastapi = "^0.111.0"
+gtts = "^2.5.1"
+uvicorn = "^0.29.0"
+asqlite = {git = "https://github.com/Rapptz/asqlite"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
