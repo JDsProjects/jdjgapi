@@ -117,7 +117,7 @@ def tts(text: typing.Union[str, None] = None, language: typing.Union[str, None] 
     data = gTTS(text, "com", language)
 
     data.write_to_fp(mp3_fp)
-    
+
     return Response(mp3_fp.getvalue(), media_type="audio/mpeg")
 
 
