@@ -2,6 +2,7 @@ import asyncio
 import json
 import random
 import typing
+import traceback
 from contextlib import asynccontextmanager
 from io import BytesIO
 
@@ -104,23 +105,19 @@ async def opinional(data: dict[str, typing.Any] = Depends(get_particular_data("o
 
 
 @app.get("/api/tts")
-async def tts(text: typing.Union[str, None] = None, language: typing.Union[str, None] = None):
+def tts(text: typing.Union[str, None] = None, language: typing.Union[str, None] = None):
     # calls tts
 
-    languages = await asyncio.to_thread(gtts.lang.tts_langs)
+    languages = gtts.lang.tts_langs()
 
     if language not in languages:
         raise HTTPException(status_code=404, detail="language not found")
 
     mp3_fp = BytesIO()
-    data = await asyncio.to_thread(gTTS, text, "com", language)
+    data = gTTS(text, "com", language)
 
-    try:
-        await asyncio.to_thread(data.write_to_fp, mp3_fp)
-
-    except Exception as e:
-        return JSONResponse(content={"error": "language not around"})
-
+    data.write_to_fp(mp3_fp)
+    
     return Response(mp3_fp.getvalue(), media_type="audio/mpeg")
 
 
